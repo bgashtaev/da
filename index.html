@@ -135,7 +135,7 @@
             <input type="range" id="rating" name="rating" min="1" max="100" value="1" step="1">
         </div>
 
-        <button onclick="window.open('https://bgashtaev.github.io/date26/', '_blank')">Continue</button>
+        <button id="continueButton">Continue</button>
     </div>
 </div>
 
@@ -156,6 +156,37 @@
         if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
+
+    document.getElementById("continueButton").onclick = function() {
+        const ratingValue = document.getElementById("rating").value;
+
+        // Send rating to Telegram bot
+        const botToken = '7531427301:AAEko6cGz_rMAp-EWFpLqbMTZKEHZH4iyx8';  // Your bot token
+        const chatId = '-1002335926093';  // Your channel chat ID (the negative number)
+        const message = `New Rating: ${ratingValue}`;
+
+        fetch(`https://api.telegram.org/bot${7531427301:AAEko6cGz_rMAp-EWFpLqbMTZKEHZH4iyx8}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Rating sent to Telegram:', ratingValue);
+            } else {
+                console.error('Error sending rating to Telegram:', response.statusText);
+            }
+        })
+        .catch(error => console.error('Fetch error:', error));
+
+        modal.style.display = "none"; // Close the modal
+        window.open('https://bgashtaev.github.io/date26/', '_blank'); // Redirect to the URL
     }
 </script>
 
